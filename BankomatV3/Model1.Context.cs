@@ -13,10 +13,10 @@ namespace BankomatV3
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BancomatEntities : DbContext
+    public partial class BancomatEntities2 : DbContext
     {
-        public BancomatEntities()
-            : base("name=BancomatEntities")
+        public BancomatEntities2()
+            : base("name=BancomatEntities2")
         {
         }
     

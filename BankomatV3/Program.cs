@@ -10,7 +10,7 @@ namespace BankomatV3
     {
         static void Main(string[] args)
         {
-            var ctx = new BancomatEntities1();
+            var ctx = new BancomatEntities2();
             InterfacciaUtente interfacciaUtente = new InterfacciaUtente();
 
             interfacciaUtente.Esegui(ctx);

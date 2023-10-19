@@ -57,6 +57,7 @@
           <Property Name="NomeUtente" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Bloccato" Type="bit" Nullable="false" />
+          <Property Name="Tentativi" Type="int" />
         </EntityType>
         <Association Name="FK_Banche_Funzionalita_Banche">
           <End Role="Banche" Type="Self.Banche" Multiplicity="1">
@@ -199,6 +200,7 @@
           <Property Name="NomeUtente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Bloccato" Type="Boolean" Nullable="false" />
+          <Property Name="Tentativi" Type="Int32" />
           <NavigationProperty Name="Banche" Relationship="Self.FK_Utenti_Banche" FromRole="Utenti" ToRole="Banche" />
           <NavigationProperty Name="ContiCorrentes" Relationship="Self.FK_ContiCorrente_Utenti" FromRole="Utenti" ToRole="ContiCorrente" />
         </EntityType>
@@ -256,7 +258,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BancomatEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BancomatEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Banches" EntityType="Self.Banche" />
           <EntitySet Name="Banche_Funzionalita" EntityType="Self.Banche_Funzionalita" />
           <EntitySet Name="ContiCorrentes" EntityType="Self.ContiCorrente" />
@@ -285,7 +287,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BancomatModelStoreContainer" CdmEntityContainer="BancomatEntities">
+        <EntityContainerMapping StorageEntityContainer="BancomatModelStoreContainer" CdmEntityContainer="BancomatEntities2">
           <EntitySetMapping Name="Banches">
             <EntityTypeMapping TypeName="BancomatModel.Banche">
               <MappingFragment StoreEntitySet="Banche">
@@ -342,6 +344,7 @@
                 <ScalarProperty Name="NomeUtente" ColumnName="NomeUtente" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Bloccato" ColumnName="Bloccato" />
+                <ScalarProperty Name="Tentativi" ColumnName="Tentativi" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

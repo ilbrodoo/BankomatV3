@@ -11,7 +11,15 @@ namespace BankomatV3
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
+    public enum EsitoLogin
+    {
+        AccessoConsentito,
+        UtentePasswordErrati,
+        PasswordErrata,
+        AccountBloccato
+    }
     public partial class Banche
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,13 +28,59 @@ namespace BankomatV3
             this.Banche_Funzionalita = new HashSet<Banche_Funzionalita>();
             this.Utentis = new HashSet<Utenti>();
         }
-    
+
         public long Id { get; set; }
         public string Nome { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Banche_Funzionalita> Banche_Funzionalita { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Utenti> Utentis { get; set; }
+
+
+        public EsitoLogin Login(Utenti credenziali, int bancaCorrente, out Utenti utente, BancomatEntities2 ctx)
+        {
+            utente = null;
+
+            // Cerca l'utente nel contesto del database
+            Utenti utenteDaValidare = ctx.Utentis.FirstOrDefault(u => u.NomeUtente == credenziali.NomeUtente);
+
+            if (utenteDaValidare == null)
+            {
+                return EsitoLogin.UtentePasswordErrati;
+            }
+
+            if (bancaCorrente != utenteDaValidare.IdBanca)
+            {
+                return EsitoLogin.UtentePasswordErrati;
+            }
+
+            if (utenteDaValidare.Bloccato)
+            {
+                return EsitoLogin.AccountBloccato;
+            }
+
+            if (credenziali.Password != utenteDaValidare.Password)
+            {
+                utente = utenteDaValidare;
+                utente.Tentativi++;
+
+                if (utente.Tentativi >= utente._tentativiDiAccessoPermessi)
+                {
+                    utente.Bloccato = true;
+                }
+
+                return EsitoLogin.PasswordErrata;
+            }
+            else
+            {
+                utente = utenteDaValidare;
+                utente.Tentativi = 0;
+                return EsitoLogin.AccessoConsentito;
+            }
+        }
+
+
     }
 }
+

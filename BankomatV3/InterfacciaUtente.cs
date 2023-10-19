@@ -139,7 +139,7 @@ namespace BankomatV3
 
                 foreach (var funzionalita in _bancaCorrente.Banche_Funzionalita)
                 {
-                    Console.WriteLine($"{funzionalita.Id} - {funzionalita.Funzionalita}");
+                    Console.WriteLine($"{funzionalita.Id} - {funzionalita.Funzionalita.Nome}");
                 }
                 Console.WriteLine("0 - Uscita");
 

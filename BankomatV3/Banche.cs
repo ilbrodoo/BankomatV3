@@ -38,24 +38,28 @@ namespace BankomatV3
         public virtual ICollection<Utenti> Utentis { get; set; }
 
 
-        public EsitoLogin Login(Utenti credenziali, int bancaCorrente, out Utenti utente, BancomatEntities2 ctx)
+        public EsitoLogin Login(Utenti credenziali, int idBancaCorrente, out Utenti utente, BancomatEntities2 ctx)
         {
             utente = null;
+            //Utente utente1 = new Utente();
 
             // Cerca l'utente nel contesto del database
-            Utenti utenteDaValidare = ctx.Utentis.FirstOrDefault(u => u.NomeUtente == credenziali.NomeUtente);
-
+            Utenti utenteDaValidare = ctx.Utentis.FirstOrDefault(u => u.NomeUtente == credenziali.NomeUtente && u.IdBanca == idBancaCorrente );
             if (utenteDaValidare == null)
             {
                 return EsitoLogin.UtentePasswordErrati;
             }
+            Utente utente1 = new Utente(utenteDaValidare.NomeUtente , utenteDaValidare.Password , utenteDaValidare.Bloccato , idBancaCorrente);
 
-            if (bancaCorrente != utenteDaValidare.IdBanca)
-            {
-                return EsitoLogin.UtentePasswordErrati;
-            }
+            //utente1.UsernName = utenteDaValidare.NomeUtente;
+            //utente1.Password = utenteDaValidare.Password;
+            //utente1.IdBanca = idBancaCorrente;
+            //utente1.Bloccato = utenteDaValidare.Bloccato;
+            
+            
 
-            if (utenteDaValidare.Bloccato)
+            
+            if (utente1.ControllaSeBloccato())
             {
                 return EsitoLogin.AccountBloccato;
             }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BankomatV3
 {
-     class InterfacciaUtente
+    class InterfacciaUtente
     {
         enum Richiesta
         {
@@ -16,13 +16,13 @@ namespace BankomatV3
             Prelievo,
             Uscita
         };
-        
+
         private Utenti _utenteCorrente;
         private Banche _bancaCorrente;
         private List<Banche_Funzionalita> _funzionalitaCorrenti;
-        
-       
-        
+
+
+
         private void StampaIntestazione(string titoloMenu)
         {
             Console.Clear();
@@ -35,7 +35,7 @@ namespace BankomatV3
             return;
         }
 
-            
+
         private int ScegliVoceMenu(int min, int max)
         {
             string rispostaUtente;
@@ -55,7 +55,7 @@ namespace BankomatV3
             return scelta;
         }
 
-       
+
         private int SchermataDiBenvenuto(BancomatEntities2 ctx)
         {
             var countBanche = 0;
@@ -91,7 +91,7 @@ namespace BankomatV3
             credenziali.Password = Console.ReadLine();
             int idBancaCorrente = Convert.ToInt32(_bancaCorrente.Id);
 
-            EsitoLogin esitoLogin = _bancaCorrente.Login(credenziali, idBancaCorrente,  out Utenti utente, ctx);
+            EsitoLogin esitoLogin = _bancaCorrente.Login(credenziali, idBancaCorrente, out Utenti utente, ctx);
 
             switch (esitoLogin)
             {
@@ -137,6 +137,7 @@ namespace BankomatV3
             {
                 StampaIntestazione($"Menu principale - {_bancaCorrente.Nome}");
 
+
                 foreach (var funzionalita in _bancaCorrente.Banche_Funzionalita)
                 {
                     Console.WriteLine($"{funzionalita.Id} - {funzionalita.Funzionalita.Nome}");
@@ -166,12 +167,12 @@ namespace BankomatV3
                         }
                         else
                         {
-                            
+
                             _bancaCorrente = ctx.Banches.FirstOrDefault(b => b.Id == rispostaUtente);
-                            
-                            
+
+
                         };
-                        
+
                         richiesta = Richiesta.Login;
 
                         break;
@@ -184,18 +185,18 @@ namespace BankomatV3
                     case Richiesta.MenuPrincipale:
                         switch (MenuPrincipale())
                         {
-                            //    case 
-                            //        richiesta = Richiesta.SchermataDiBenvenuto;
-                            //        break;
-                            //    case Banca.Funzionalita.Versamento:
-                            //        richiesta = Richiesta.Versamento;
-                            //        break;
-                            //    case Banca.Funzionalita.ReportSaldo:
-                            //        richiesta = Richiesta.ReportSaldo;
-                            //        break;
-                            //    case Banca.Funzionalita.Prelievo:
-                            //        richiesta = Richiesta.Prelievo;
-                            //        break;
+                                //case 
+                                //    richiesta = Richiesta.SchermataDiBenvenuto;
+                                //    break;
+                                //case Banca.Funzionalita.Versamento:
+                                //    richiesta = Richiesta.Versamento;
+                                //    break;
+                                //case Banca.Funzionalita.ReportSaldo:
+                                //    richiesta = Richiesta.ReportSaldo;
+                                //    break;
+                                //case Banca.Funzionalita.Prelievo:
+                                //    richiesta = Richiesta.Prelievo;
+                                //    break;
                         }
                         break;
                     //case Richiesta.Versamento:
